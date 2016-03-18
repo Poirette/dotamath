@@ -1,0 +1,19 @@
+.navigation {
+  width: 35rem;
+  flex-direction: column;
+  position: absolute;
+  top: 6.4rem;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.options {
+  height: 3rem;
+}
