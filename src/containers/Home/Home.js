@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {isLoaded as isMatchesLoaded, load as loadMatches} from 'redux/modules/matches';
 import * as statsActions from 'redux/modules/stats';
+import * as matchesActions from 'redux/modules/matches';
 import {isLoaded as isPlayersLoaded, load as loadPlayers} from 'redux/modules/players';
 import {isLoaded as isHeroesLoaded, load as loadHeroes} from 'redux/modules/heroes';
 import { asyncConnect } from 'redux-async-connect';
@@ -40,8 +41,10 @@ import { MatchesList, Stats } from 'components';
     error: state.matches.error,
     loading: state.matches.loading,
     stats: state.stats.data,
+    matchesActions: matchesActions,
+    pushState: routeActions.push
   }),
-  { pushState: routeActions.push, ...statsActions })
+  { ...statsActions })
 export default class Home extends Component {
   static propTypes = {
     matches: PropTypes.array,
@@ -52,7 +55,9 @@ export default class Home extends Component {
     computeStats: PropTypes.func,
     activePlayer: PropTypes.number,
     stats: PropTypes.array,
-    params: PropTypes.object
+    active: PropTypes.number,
+    params: PropTypes.object,
+    pushState: PropTypes.func
   };
 
   constructor(props) {
@@ -60,6 +65,15 @@ export default class Home extends Component {
 
     this.handeMatchClick = this.handeMatchClick.bind(this);
     this.handleAllClick = this.handleAllClick.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, matchesActions: { load }, params: { active }, players } = this.props;
+    const nextActive = nextProps.params.active;
+    if (nextActive !== active) {
+      dispatch(load(players[nextActive]._id));
+    }
   }
 
   handeMatchClick(match) {
@@ -72,14 +86,24 @@ export default class Home extends Component {
     dispatch(computeStats(matches, players[active]._id));
   }
 
+  handleTabChange(i) {
+    const { dispatch, pushState, params } = this.props;
+    dispatch(pushState('/stats/' + params.playerIds + '/' + i ));
+  }
+
   render() {
+    const { stats, params: { active } } = this.props;
     return (
       <div>
         <MatchesList {...this.props}
           onMatchClick={this.handeMatchClick}
           onAllClick={this.handleAllClick}
         />
-        <Stats data={this.props.stats}/>
+        <Stats
+          data={stats}
+          active={Number(active)}
+          onTabChange={this.handleTabChange}
+        />
       </div>
     );
   }

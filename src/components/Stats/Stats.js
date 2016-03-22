@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Tabs, Tab } from 'react-toolbox';
 import { Radar } from 'components';
 
 function limit(value) {
@@ -10,6 +11,8 @@ function limit(value) {
 export default class Stats extends Component {
   static propTypes = {
     data: PropTypes.array,
+    active: PropTypes.number,
+    onTabChange: PropTypes.func
   };
 
   constructor(props) {
@@ -19,6 +22,8 @@ export default class Stats extends Component {
   }
 
   parseData(datas) {
+    if (!(datas && datas.length)) return null;
+
     return datas.map(data => {
       const parsedDatas = {
         'xp_per_min': limit(data.perMin.xp_per_min / 780 * 1.05),
@@ -38,8 +43,7 @@ export default class Stats extends Component {
   render() {
     const styles = require('./Stats.scss');
 
-    const { data } = this.props;
-    if (!data) return null;
+    const { data, active, onTabChange } = this.props;
 
     const radarData = this.parseData(data);
     const x = 400;
@@ -57,9 +61,13 @@ export default class Stats extends Component {
       'Kills',
     ];
 
-
     return (
       <div className={styles.stats}>
+        <Tabs index={active} onChange={onTabChange}>
+          <Tab label="Test" />
+          <Tab label="Test 1" />
+          <Tab label="Test 2" />
+        </Tabs>
         <Radar
           data={radarData}
           labels={labels}

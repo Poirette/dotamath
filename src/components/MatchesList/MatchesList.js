@@ -30,7 +30,11 @@ export default class MatchesList extends Component {
     return matches.map(match => {
       const date = moment.unix(match.start_time).format('DD/MM/YYYY');
       const player = match.players.filter(this.findPlayer)[0];
-      const hero = heroes.filter(this.findHero.bind(this, player))[0];
+      const hero = player && heroes.filter(this.findHero.bind(this, player))[0];
+
+      if (!hero || !player) {
+        return <span />;
+      }
 
       return (
         <ListItem
