@@ -10,7 +10,6 @@ export default class MatchesList extends Component {
     players: PropTypes.array,
     activePlayer: PropTypes.string,
     onMatchClick: PropTypes.func,
-    onAllClick: PropTypes.func,
     params: PropTypes.object
   };
 
@@ -40,7 +39,7 @@ export default class MatchesList extends Component {
         <ListItem
           onClick={onMatchClick.bind(this, match)}
           key={match._id}
-          avatar="https://dl.dropboxusercontent.com/u/2247264/assets/m.jpg"
+          avatar={'http://cdn.dota2.com/apps/dota2/images/heroes/' + hero.name.substring(14, 50) + '_lg.png'}
           caption={hero.localized_name}
           legend={date}
           rightIcon={this.isWonMatch(player, match) ? 'thumb_up' : 'thumb_down'}
@@ -64,13 +63,9 @@ export default class MatchesList extends Component {
 
   render() {
     const styles = require('./MatchesList.scss');
-    const { onAllClick } = this.props;
 
     return (
       <Navigation type="vertical" className={styles.navigation}>
-        <div className={styles.options} onClick={onAllClick}>
-          All Matches
-        </div>
         <div className={styles.list}>
           <List selectable ripple>
             <ListSubHeader caption="Matches" />

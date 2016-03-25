@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {isLoaded as isMatchesLoaded, load as loadMatches} from 'redux/modules/matches';
-import * as statsActions from 'redux/modules/stats';
 import * as matchesActions from 'redux/modules/matches';
 import {isLoaded as isPlayersLoaded, load as loadPlayers} from 'redux/modules/players';
 import {isLoaded as isHeroesLoaded, load as loadHeroes} from 'redux/modules/heroes';
 import { asyncConnect } from 'redux-async-connect';
 import { routeActions } from 'react-router-redux';
-import { MatchesList, Stats } from 'components';
+import { MatchesList, Home } from 'components';
 
 @asyncConnect([{
   deferred: true,
@@ -34,30 +33,27 @@ import { MatchesList, Stats } from 'components';
   }
 }])
 @connect(
-  (state) => ({
+  (state, props) => ({
     matches: state.matches.data,
+    stats: matchesActions.getStats(state, props),
     players: state.players.data,
     heroes: state.heroes.data,
     error: state.matches.error,
     loading: state.matches.loading,
-    stats: state.stats.data,
     matchesActions: matchesActions,
     pushState: routeActions.push
-  }),
-  { ...statsActions })
-export default class Home extends Component {
+  }))
+export default class HomeContainer extends Component {
   static propTypes = {
     matches: PropTypes.array,
     players: PropTypes.array,
-    heroes: PropTypes.array,
     matchesActions: PropTypes.object,
     dispatch: PropTypes.func,
     computeStats: PropTypes.func,
-    activePlayer: PropTypes.number,
-    stats: PropTypes.array,
     active: PropTypes.number,
     params: PropTypes.object,
-    pushState: PropTypes.func
+    pushState: PropTypes.func,
+    children: PropTypes.node
   };
 
   constructor(props) {
@@ -71,14 +67,15 @@ export default class Home extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch, matchesActions: { load }, params: { active }, players } = this.props;
     const nextActive = nextProps.params.active;
+
     if (nextActive !== active) {
       dispatch(load(players[nextActive]._id));
     }
   }
 
   handeMatchClick(match) {
-    const { dispatch, computeStats, params: {active}, players } = this.props;
-    dispatch(computeStats([match], players[active]._id));
+    const { dispatch, pushState, params } = this.props;
+    dispatch(pushState('/stats/' + params.playerIds + '/' + params.active + '/matches/' + match._id ));
   }
 
   handleAllClick() {
@@ -88,22 +85,22 @@ export default class Home extends Component {
 
   handleTabChange(i) {
     const { dispatch, pushState, params } = this.props;
-    dispatch(pushState('/stats/' + params.playerIds + '/' + i ));
+    dispatch(pushState('/stats/' + params.playerIds + '/' + i + '/matches'));
   }
 
   render() {
-    const { stats, params: { active } } = this.props;
     return (
       <div>
         <MatchesList {...this.props}
           onMatchClick={this.handeMatchClick}
           onAllClick={this.handleAllClick}
         />
-        <Stats
-          data={stats}
-          active={Number(active)}
+        <Home
+          {...this.props}
           onTabChange={this.handleTabChange}
-        />
+        >
+          {React.Children.map(this.props.children, child => React.cloneElement(child, this.props) )}
+        </Home>
       </div>
     );
   }

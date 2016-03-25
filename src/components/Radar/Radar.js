@@ -77,7 +77,7 @@ export default class Radar extends Component {
         <svg
           height={height}
           width={width}
-          style={{display: 'block', margin: 'auto'}}>
+        >
           <g transform={'translate(' + [padding, padding].join(',') + ')'}>
             <title>{title}</title>
             {paths.rings.map(this.getRing)}

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Tabs, Tab } from 'react-toolbox';
 import { Radar } from 'components';
 
 function limit(value) {
@@ -10,14 +9,15 @@ function limit(value) {
 
 export default class Stats extends Component {
   static propTypes = {
-    data: PropTypes.array,
+    stats: PropTypes.array,
+    players: PropTypes.array,
     active: PropTypes.number,
+    match: PropTypes.object,
     onTabChange: PropTypes.func
   };
 
   constructor(props) {
     super(props);
-
     this.parseData = this.parseData.bind(this);
   }
 
@@ -43,9 +43,9 @@ export default class Stats extends Component {
   render() {
     const styles = require('./Stats.scss');
 
-    const { data, active, onTabChange } = this.props;
-
-    const radarData = this.parseData(data);
+    const { stats } = this.props;
+    console.log(stats);
+    const radarData = this.parseData(stats);
     const x = 400;
     const y = 400;
     const padding = 50;
@@ -63,11 +63,6 @@ export default class Stats extends Component {
 
     return (
       <div className={styles.stats}>
-        <Tabs index={active} onChange={onTabChange}>
-          <Tab label="Test" />
-          <Tab label="Test 1" />
-          <Tab label="Test 2" />
-        </Tabs>
         <Radar
           data={radarData}
           labels={labels}
