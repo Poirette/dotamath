@@ -11,12 +11,6 @@ export default class SummaryContainer extends Component {
       return null;
     }
 
-    return (
-      <div>
-        <Stats
-          {...this.props}
-        />
-      </div>
-    );
+    return <Stats {...this.props} />;
   }
 }

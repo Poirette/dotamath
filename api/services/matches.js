@@ -1,4 +1,4 @@
-import {collection} from '../../src/database';
+import {collection} from '../database';
 
 function parseBulk(match){
   return { insertOne: {document: match }}

@@ -26,14 +26,14 @@ export default class Stats extends Component {
 
     return datas.map(data => {
       const parsedDatas = {
-        'xp_per_min': limit(data.perMin.xp_per_min / 780 * 1.05),
-        'gold_per_min': limit(data.perMin.gold_per_min / 580 * 1.05),
-        'hero_damage_per_min': limit(data.perMin.hero_damage_per_min / 700 * 1.05),
-        'deaths_per_min': limit(1 - (data.perMin.deaths_per_min / 0.27) * 1.05),
-        'tower_damage_per_min': limit(data.perMin.tower_damage_per_min / 90 * 1.05),
-        'hero_healing_per_min': limit(data.perMin.hero_healing_per_min / 45 * 1.05),
-        'assists_per_min': limit(data.perMin.assists_per_min / 0.5 * 1.05),
-        'kills_per_min': limit(data.perMin.kills_per_min / 0.3 * 1.05),
+        'xp_per_min': limit(data.perMin.xp_per_min / 780),
+        'gold_per_min': limit(data.perMin.gold_per_min / 580),
+        'hero_damage_per_min': limit(data.perMin.hero_damage_per_min / 700),
+        'deaths_per_min': limit(1 - (data.perMin.deaths_per_min / 0.27)),
+        'tower_damage_per_min': limit(data.perMin.tower_damage_per_min / 90),
+        'hero_healing_per_min': limit(data.perMin.hero_healing_per_min / 45),
+        'assists_per_min': limit(data.perMin.assists_per_min / 0.5),
+        'kills_per_min': limit(data.perMin.kills_per_min / 0.3),
       };
 
       return parsedDatas;
@@ -44,7 +44,6 @@ export default class Stats extends Component {
     const styles = require('./Stats.scss');
 
     const { stats } = this.props;
-    console.log(stats);
     const radarData = this.parseData(stats);
     const x = 400;
     const y = 400;

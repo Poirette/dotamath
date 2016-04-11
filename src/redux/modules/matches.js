@@ -104,21 +104,25 @@ export function load(playerId) {
 
 export function getStats(state, props) {
   const { matches } = state;
-  const { playerIds, active, matchId } = props.params;
+  const { playerIds, active, matchId, slot } = props.params;
+
+  if (!(matches && matches.data)) return null;
 
   if (!matchId) {
     return summarize(matches.data, playerIds.split(',')[active]);
   }
 
-  const data = matches.data.find(match => {
-    return String(match._id) === String(matchId);
-  });
+  const matchData = matches.data.find(match => String(match._id) === String(matchId));
 
-  if (!data) {
+  const playerData = !!slot ? (
+    matchData.players.find(player => Number(player.player_slot) === Number(slot))
+  ) : (
+    {_id: playerIds.split(',')[active] }
+  );
+
+  if (!matchData) {
     return null;
   }
 
-  return [Object.assign(
-    {}, summarize([data], playerIds.split(',')[active])[0], { matchData: data }
-  )];
+  return summarize([matchData], playerData._id);
 }

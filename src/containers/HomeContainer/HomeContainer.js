@@ -89,6 +89,9 @@ export default class HomeContainer extends Component {
   }
 
   render() {
+    const props = { ...this.props };
+    delete props.children;
+
     return (
       <div>
         <MatchesList {...this.props}
@@ -99,7 +102,7 @@ export default class HomeContainer extends Component {
           {...this.props}
           onTabChange={this.handleTabChange}
         >
-          {React.Children.map(this.props.children, child => React.cloneElement(child, this.props) )}
+          {React.Children.map(this.props.children, child => React.cloneElement(child, props) )}
         </Home>
       </div>
     );

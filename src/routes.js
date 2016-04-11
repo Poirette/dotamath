@@ -6,8 +6,8 @@ import {
   NotFound,
   HomeContainer,
   SummaryContainer,
-  Match,
-  Stats
+  MatchContainer,
+  StatsContainer
 } from 'containers';
 
 export default () => {
@@ -21,8 +21,9 @@ export default () => {
       <Route path="stats/:playerIds/:active" component={HomeContainer}>
         <IndexRoute component={SummaryContainer}/>
         <Route path="matches" component={SummaryContainer} />
-        <Route path="matches/:matchId" component={Match}>
-          <Route path="matches/:matchId/:slot" component={Stats} />
+        <Route path="matches/:matchId" component={MatchContainer}>
+          <IndexRoute component={StatsContainer}/>
+          <Route path="slot/:slot" component={StatsContainer} />
         </Route>
       </Route>
 

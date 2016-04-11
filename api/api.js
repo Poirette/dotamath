@@ -7,7 +7,7 @@ import {mapUrl} from 'utils/url.js';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
-import * as database from '../src/database';
+import * as database from './database';
 
 database.connect()
 .then(function(){

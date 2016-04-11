@@ -1,4 +1,4 @@
-import {collection} from '../../src/database';
+import {collection} from '../database';
 
 export function findAll(){
   return collection('heroes').find().toArrayAsync();

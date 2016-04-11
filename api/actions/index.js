@@ -1,3 +1,4 @@
-export * as matches from './matches/index';
-export * as players from './players/index';
-export * as heroes from './heroes/index';
+export * as matches from './matches';
+export * as players from './players';
+export * as heroes from './heroes';
+export * as sync from './sync';
