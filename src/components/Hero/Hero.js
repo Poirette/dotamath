@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Avatar } from 'react-toolbox';
 
-export default class MatchesList extends Component {
+export default class Hero extends Component {
   static propTypes = {
     name: PropTypes.string,
     slot: PropTypes.number,
