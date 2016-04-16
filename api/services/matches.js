@@ -19,3 +19,7 @@ export function findById(matchId){
 export function create(matches){
   return collection('matches').bulkWrite(matches.map(parseBulk), {ordered: false});
 }
+
+export function findAll(limit, sort) {
+  return collection('matches').find().limit(limit).sort(sort).toArrayAsync();
+}

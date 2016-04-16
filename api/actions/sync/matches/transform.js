@@ -2,7 +2,9 @@ import Promise from 'bluebird';
 import { convertor } from '../../../services/players';
 
 export default function transform(matches) {
-  return matches.map(o => {
+  const cleanMatches = matches.filter(o => !!o);
+
+  return cleanMatches.map(o => {
     const { match, details } = o;
     const durationMin = Number(details.duration) / 60;
 
